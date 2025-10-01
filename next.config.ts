@@ -38,6 +38,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
+  experimental: {
+    esmExternals: true
+  }
 };
 
 export default nextConfig;
