@@ -35,6 +35,9 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
 };
 
 export default nextConfig;
