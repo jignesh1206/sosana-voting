@@ -894,12 +894,7 @@ export default function RoundsPage() {
                               {account.nominator.toString().slice(0, 8)}...{account.nominator.toString().slice(-8)}
                             </span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="text-foreground/60">Snapshot Amount:</span>
-                            <span className="text-foreground">
-                              {safeToNumber(account.snapshotAmount).toLocaleString()}
-                            </span>
-                          </div>
+                          
                           <div className="flex justify-between">
                             <span className="text-foreground/60">Vote Count:</span>
                             <span className="text-foreground font-semibold">
