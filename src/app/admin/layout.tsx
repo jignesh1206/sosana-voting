@@ -15,6 +15,7 @@ const menuItems = [
   { name: 'Nominations', href: '/admin/nominations', icon: '🏆' },
   { name: 'Votes', href: '/admin/votes', icon: '🗳️' },
   { name: 'Results', href: '/admin/results', icon: '🏅' },
+  { name: 'Whitelist', href: '/admin/whitelist', icon: '📋' },
   { name: 'Vesting', href: '/admin/vesting', icon: '🔒' },
   { name: 'Users', href: '/admin/users', icon: '👥' },
   { name: 'Settings', href: '/admin/settings', icon: '⚙️' },

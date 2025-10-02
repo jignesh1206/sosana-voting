@@ -820,6 +820,74 @@ export default function Vote() {
                 </div>
               </div>
             </div>
+          ) : allRounds.length > 0 ? (
+            // Show upcoming round if there are rounds but none are currently active
+            (() => {
+              const currentTime = Math.floor(Date.now() / 1000);
+              const upcomingRound = allRounds.find(round => {
+                const startTime = parseInt(round.account.roundStartTime);
+                return startTime > currentTime;
+              });
+
+              if (upcomingRound) {
+                return (
+                  <div className="cosmic-card p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <h2 className="text-2xl font-bold mb-4">
+                        Upcoming Round: <span className="text-accent">{`Round ${upcomingRound.account.roundNo}`}</span>
+                      </h2>
+                      <div className="text-xl font-bold">
+                        <Countdown
+                          date={timestampToDate(upcomingRound.account.roundStartTime)}
+                          renderer={countdownRenderer}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      <div>
+                        <p className="text-sm text-foreground/60">Nomination Start</p>
+                        <p className="text-base">{timestampToDate(upcomingRound.account.roundStartTime).toLocaleString()}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-foreground/60">Voting Start</p>
+                        <p className="text-base">{timestampToDate(upcomingRound.account.votingStartTime).toLocaleString()}</p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      <div>
+                        <p className="text-sm text-foreground/60">Round End</p>
+                        <p className="text-base">{timestampToDate(upcomingRound.account.roundEndTime).toLocaleString()}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-foreground/60">Status</p>
+                        <p className="text-base text-amber-400">⏳ Upcoming</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl">
+                      <div className="flex items-center space-x-3">
+                        <div className="text-xl">⏰</div>
+                        <div>
+                          <h4 className="font-semibold text-amber-400">Round Not Started Yet</h4>
+                          <p className="text-sm text-foreground/60">
+                            This round will begin soon. Check back when nominations open!
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="cosmic-card p-6">
+                    <div className="text-center py-8">
+                      <div className="text-3xl mb-2">⏰</div>
+                      <h4 className="text-lg font-semibold text-foreground mb-1">No Active Round</h4>
+                      <p className="text-foreground/60">There are currently no active rounds on the blockchain</p>
+                    </div>
+                  </div>
+                );
+              }
+            })()
           ) : (
             <div className="cosmic-card p-6">
               <div className="text-center py-8">

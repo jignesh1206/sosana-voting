@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Countdown from 'react-countdown';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
@@ -11,7 +9,6 @@ import { PublicKey } from '@solana/web3.js';
 import { AnchorProvider, Program, web3 } from '@project-serum/anchor';
 import { useGetAdminDashboardQuery, useGetAdminRoundsQuery } from '@/store/api/adminApi';
 import { useGetPreLaunchAdminDataQuery } from '@/store/api/preLaunchApi';
-import AdminDashboardComponent from '@/components/admin/AdminDashboard';
 import idl from '@/contracts/idl.json';
 
 interface DashboardStats {
@@ -54,7 +51,6 @@ export default function AdminDashboard() {
   const [isInitiating, setIsInitiating] = useState<boolean>(false);
   const wallet = useWallet();
   const { connection } = useConnection();
-  const router = useRouter();
   
   // Use RTK Query hooks for data fetching
   const { data: dashboardData, isLoading: dashboardLoading, refetch: refetchDashboard } = useGetAdminDashboardQuery();
@@ -258,10 +254,25 @@ export default function AdminDashboard() {
         pauseOnHover
         theme="dark"
       />
-      
-     
-      {/* Admin Dashboard with Wallet Balances */}
-      <AdminDashboardComponent />
+      {/* Overview Stats */}
+      <div className="cosmic-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-foreground">Overview</h2>
+          <button
+            onClick={handleRefresh}
+            className="px-3 py-2 rounded-md border border-card-border hover:bg-card-highlight transition-colors text-sm"
+          >
+            Refresh
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <StatCard title="Total Rounds" value={stats.totalRounds} icon="📦" />
+          <StatCard title="Active Rounds" value={stats.activeRounds} icon="⏱️" />
+          <StatCard title="Nominations" value={stats.totalNominations} icon="🏆" />
+          <StatCard title="Votes" value={stats.totalVotes} icon="🗳️" />
+          <StatCard title="Users" value={stats.totalUsers} icon="👥" />
+        </div>
+      </div>
 
       {/* Vesting Management Section removed in favor of left menu */}
 
@@ -310,6 +321,30 @@ export default function AdminDashboard() {
             <div>
               <p className="font-bold text-foreground text-lg mb-1">View Results</p>
               <p className="text-sm text-foreground/70">Check and analyze round results</p>
+            </div>
+          </Link>
+          <Link
+            href="/admin/whitelist"
+            className="group flex items-center p-6 cosmic-card border border-card-border/50 rounded-xl hover:bg-card-highlight/50 hover:border-accent/30 transition-all duration-300 transform hover:scale-105"
+          >
+            <div className="flex-shrink-0 mr-4">
+              <span className="text-3xl group-hover:scale-110 transition-transform duration-300">📋</span>
+            </div>
+            <div>
+              <p className="font-bold text-foreground text-lg mb-1">Manage Whitelist</p>
+              <p className="text-sm text-foreground/70">Add or remove whitelisted users</p>
+            </div>
+          </Link>
+          <Link
+            href="/admin/vesting"
+            className="group flex items-center p-6 cosmic-card border border-card-border/50 rounded-xl hover:bg-card-highlight/50 hover:border-accent/30 transition-all duration-300 transform hover:scale-105"
+          >
+            <div className="flex-shrink-0 mr-4">
+              <span className="text-3xl group-hover:scale-110 transition-transform duration-300">🔒</span>
+            </div>
+            <div>
+              <p className="font-bold text-foreground text-lg mb-1">Vesting Control</p>
+              <p className="text-sm text-foreground/70">Manage vesting configuration</p>
             </div>
           </Link>
         </div>

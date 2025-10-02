@@ -736,6 +736,24 @@ export default function RoundsPage() {
                  const startTime = safeToNumber((round.account as any).roundStartTime);
                  const endTime = safeToNumber((round.account as any).roundEndTime);
                  const isActive = currentTime >= startTime && currentTime <= endTime;
+                 const isUpcoming = currentTime < startTime;
+                 const isFinished = currentTime > endTime;
+
+                 // Determine status and styling
+                 let statusText, statusClass;
+                 if (isUpcoming) {
+                   statusText = 'Upcoming';
+                   statusClass = 'bg-amber-500/20 text-amber-400';
+                 } else if (isActive) {
+                   statusText = 'Active';
+                   statusClass = 'bg-green-500/20 text-green-400';
+                 } else if (isFinished) {
+                   statusText = 'Finished';
+                   statusClass = 'bg-red-500/20 text-red-400';
+                 } else {
+                   statusText = 'Inactive';
+                   statusClass = 'bg-gray-500/20 text-gray-400';
+                 }
 
                 return (
                   <div key={round.publicKey.toString()} className="p-4 bg-card-highlight rounded-xl border border-card-border">
@@ -743,12 +761,8 @@ export default function RoundsPage() {
                       <h4 className="font-semibold text-foreground">
                         Round #{safeToString((round.account as any).roundNo)}
                       </h4>
-                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        isActive 
-                          ? 'bg-green-500/20 text-green-400' 
-                          : 'bg-red-500/20 text-red-400'
-                      }`}>
-                        {isActive ? 'Active' : 'Inactive'}
+                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>
+                        {isUpcoming ? '⏳' : isActive ? '🟢' : isFinished ? '🏁' : '⚫'} {statusText}
                       </div>
                     </div>
                     
